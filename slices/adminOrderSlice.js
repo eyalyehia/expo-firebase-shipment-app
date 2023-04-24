@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {  doc , getDoc } from "firebase/firestore";
-import { db } from '../firebase_config';
+import { collection, doc , getDoc, setDoc } from "firebase/firestore";
+import { ref , remove } from 'firebase/database';
+import { db , rtdb } from '../firebase_config';
 
 
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
   userinfo:null,
     isLoading: false,
     thisIsLoading:false,
+    isCompleteOrder:null,
   };
 
 
@@ -31,6 +33,37 @@ const initialState = {
         }
     }
   );
+
+  export const setCompleteOrderForUser = createAsyncThunk(
+    'admin_order/setOrderFromDB',
+    async(details,{ rejectWithValue }) => {
+      try {
+       const [userId, orderId , isDone , price] = details;
+        const docRef = collection(db,`users/${userId}/orders`)
+        const orderRef = ref(rtdb,`orders/${orderId}`)
+          //  update fireStore
+        if(isDone === false && price == null || ""){
+         return rejectWithValue('No changes were made')
+        }
+        else if(price == null || ""){
+          await setDoc(doc(docRef,orderId),{
+            isDone:isDone
+          },{ merge: true })
+          await remove(orderRef);
+        }
+        else{
+          await setDoc(doc(docRef,orderId),{
+            isDone:isDone,
+            price:price,
+          },{ merge: true })
+          await remove(orderRef);
+        }
+        return {message:'The order is complete'}
+      } catch (error) {
+        return rejectWithValue(error)
+      }
+    }
+  )
 
 
 
@@ -56,6 +89,12 @@ const initialState = {
           state.thisIsLoading = false
            console.log(payload)
         })
+      builder.addCase(setCompleteOrderForUser.fulfilled, (state , action) => {
+        state.isCompleteOrder = action.payload.message
+        })
+        builder.addCase(setCompleteOrderForUser.rejected,( state , { payload } )  => {
+           state.isCompleteOrder = payload
+        })
     }
   })
 
@@ -67,5 +106,6 @@ const initialState = {
   export const selectLoading = (state) => state.adminOrder.thisIsLoading;
   export const selectRealTimeOrders = (state) => state.adminOrder.realTimeOrders;
   export const selectUserInfoForModal = (state) => state.adminOrder.userinfo;
+  export const selectIsCompleteOrder = (state) => state.adminOrder.isCompleteOrder;
 
   export default adminOrderSlice.reducer;

@@ -32,7 +32,7 @@ const navigation = useNavigation();
   horizontal
   renderItem={({ item }) => (
 <TouchableOpacity
- onPress={() => navigation.navigate(item.screen)}
+ onPress={() => {item.screen === 'EatsScreen' ? {} : navigation.navigate(item.screen)}}
 style={tw`p-2 pl-6 pb-8 pt-4 ${origin ? `bg-gray-200` : `opacity-20`}  m-2 w-40`}
 disabled={!origin}
 >

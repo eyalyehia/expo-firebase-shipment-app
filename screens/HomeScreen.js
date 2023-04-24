@@ -1,4 +1,4 @@
-import { StyleSheet, Text, SafeAreaView, View  } from 'react-native'
+import { StyleSheet, Text, SafeAreaView, View ,Button } from 'react-native'
 import React from 'react'
 import tw from 'tailwind-react-native-classnames';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -10,9 +10,11 @@ import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 
 
+
 const HomeScreen = () => {
 const dispatch = useDispatch();
 const navigation = useNavigation();
+
 
   return (
     <SafeAreaView style={tw `bg-white h-full`}>

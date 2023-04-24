@@ -91,7 +91,7 @@ const UserProfile = ({ userId , getUser}) => {
     <View>
       <Text style={tw`font-bold text-2xl text-center p-4`}>User Details</Text>
       <View style={tw`w-4/5 mx-auto`}>
-        <Text style={tw`text-gray-800 mb-4 text-lg font-extralight`}>
+        <Text style={tw`text-gray-800 mb-2 text-lg font-extralight`}>
           Full Name
         </Text>
         <TextInput
@@ -108,7 +108,7 @@ const UserProfile = ({ userId , getUser}) => {
         />
       </View>
       <View style={tw`w-4/5 mx-auto`}>
-        <Text style={tw`text-gray-800 mb-4 text-lg font-extralight`}>
+        <Text style={tw`text-gray-800 my-2 text-lg font-extralight`}>
           Email Address
         </Text>
         <TextInput
@@ -126,7 +126,7 @@ const UserProfile = ({ userId , getUser}) => {
         />
       </View>
       <View style={tw`w-4/5 mx-auto`}>
-        <Text style={tw`text-gray-800 mb-4 text-lg font-extralight`}>
+        <Text style={tw`text-gray-800 my-2 text-lg font-extralight`}>
           Phone Number
         </Text>
         <TextInput
@@ -144,7 +144,7 @@ const UserProfile = ({ userId , getUser}) => {
         />
       </View>
       <View style={tw`w-4/5 mx-auto`}>
-        <Text style={tw`text-gray-800 mb-4 text-lg font-extralight`}>
+        <Text style={tw`text-gray-800 my-2 text-lg font-extralight`}>
           Password
         </Text>
         <TextInput
@@ -162,7 +162,7 @@ const UserProfile = ({ userId , getUser}) => {
         />
       </View>
       <View style={tw`w-4/5 mx-auto`}>
-        <Text style={tw`text-gray-800 mb-4 text-lg font-extralight`}>
+        <Text style={tw`text-gray-800 my-2 text-lg font-extralight`}>
           new Password
         </Text>
         <TextInput

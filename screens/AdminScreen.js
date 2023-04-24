@@ -20,8 +20,6 @@ const AdminScreen = () => {
   const dispath = useDispatch();
 
   const getRealTimeOrders = () => {
-
-
     try {
       const orderRef = ref(rtdb,"orders")
       onValue(orderRef , (snapshot) => {

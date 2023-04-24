@@ -3,14 +3,15 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getDatabase } from 'firebase/database';
 
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAf10Ek640MlkZ2UQR1Sakl8CcZwXhhdew",
-  authDomain: "e-analogy-376310.firebaseapp.com",
-  projectId: "e-analogy-376310",
-  storageBucket: "e-analogy-376310.appspot.com",
-  messagingSenderId: "759112845995",
-  appId: "1:759112845995:web:23be0db53f3696c26445ee",
-  measurementId: "G-1B2W05R9E2"
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTHDOMAIN,
+  projectId: process.env.PROJECTID,
+  storageBucket: process.env.STORAGEBUCKET,
+  messagingSenderId: process.env.MESSAGINGSENDERID,
+  appId: process.env.APPID,
+  measurementId: process.env.MEASUREMENTID
 };
 
 

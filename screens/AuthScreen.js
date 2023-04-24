@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View ,SafeAreaView , TextInput , TouchableOpacity, Button } from 'react-native';
+import { Text, View ,SafeAreaView , TouchableOpacity, Button } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
 import React, { useState } from 'react';
 import { submitUserDetails , loginUserDetails, selectError } from '../slices/userSlice';
@@ -16,6 +17,8 @@ const initialForm = {
 const AuthScreen = () => {
 
   const [signUp,setSignUp] = useState(true);
+  const [isPasswordSecure, setIsPasswordSecure] = useState(true);
+  const [confirmIsPasswordSecure, setConfirmIsPasswordSecure] = useState(true);
   const dispatch = useDispatch();
 
   const error = useSelector(selectError)
@@ -43,8 +46,7 @@ const AuthScreen = () => {
         <TextInput
          onChangeText={e => setForm({...form, fullname : e})}
          maxLength={20}
-         placeholder='full name...'
-         style={[tw`bg-gray-300 w-72 p-3 rounded-xl`,styles.textInput,styles.textInputContainer]}/>
+         label='Full Name'/>
           </View>
         )}
 
@@ -53,8 +55,8 @@ const AuthScreen = () => {
        keyboardType='email-address'
        onChangeText={e => setForm({...form, email : e})}
        maxLength={30}
-       placeholder='email...'
-       style={[tw`bg-gray-300 w-72 p-3 rounded-xl`,styles.textInput,styles.textInputContainer]}/>
+       label="Email"
+      />
      </View>
 
       {signUp && (
@@ -63,30 +65,32 @@ const AuthScreen = () => {
            keyboardType='numeric'
             onChangeText={e => setForm({...form, phone_number : e})}
             maxLength={10}
-            placeholder='phoneNumber...'
-            style={[tw`bg-gray-300 w-72 p-3 rounded-xl`,styles.textInput,styles.textInputContainer]}
+            label='PhoneNumber'
+           
             />
           </View>
       )}
   
      <View style={tw`flex w-72 mr-6 mb-4`}>
       <TextInput
-       secureTextEntry
+       right={<TextInput.Icon icon="eye" onPress={() => setIsPasswordSecure(prev => !prev)} />}
+       secureTextEntry={isPasswordSecure}
        onChangeText={e => setForm({...form, user_password : e})}
        maxLength={20}
-       placeholder='password...'
-       style={[tw`bg-gray-300 w-72 p-3 rounded-xl`,styles.textInput,styles.textInputContainer]}
+       label='Password'
+      
        />
      </View>
 
      {signUp && (
      <View style={tw`flex w-72 mr-6`}>
      <TextInput
-      secureTextEntry
+       right={<TextInput.Icon icon="eye" onPress={() => setConfirmIsPasswordSecure(prev => !prev) } />}
+      secureTextEntry={confirmIsPasswordSecure}
       onChangeText={e => setForm({...form, confirmPassword : e})}
       maxLength={20}
-      placeholder='password...'
-      style={[tw`bg-gray-300 w-72 p-3 rounded-xl`,styles.textInput,styles.textInputContainer]}
+      label='Confirm Password'
+      disabled={form?.user_password.length? false : true}
       />
     </View>
      )}
@@ -94,20 +98,21 @@ const AuthScreen = () => {
 
       <Text style={tw`text-red-400 text-lg m-2 font-semibold`}>{error}</Text>
      <TouchableOpacity     
-      style={tw`w-40 bg-black p-3 rounded-2xl ${!error && `mt-2`}`}
+      style={tw`w-72 bg-black p-2 rounded-xl ${!error && `mt-2`}`}
       >
         <Button
         onPress={submitForm}
          title={signUp ? "Sign Up" : "Sign In"}
-         style={tw`text-white text-center
+         style={tw`text-center
           text-xl font-semibold`}
+          color='white'
          />
       </TouchableOpacity>
       <TouchableOpacity
       onPress={() => setSignUp(prev => !prev)}
       >
       <Text 
-        style={tw`text-gray-500 mt-3`}
+        style={tw`mt-4 text-indigo-600`}
        >{signUp ? "Already have an account?" : "Don't have an account?"}</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -115,14 +120,3 @@ const AuthScreen = () => {
 }
 
 export default AuthScreen
-
-const styles = StyleSheet.create({
-    textInput: {
-        backgroundColor: "#DDDDDF",
-        borderRadius: 0,
-        fontSize: 18,
-    },
-    textInputContainer: {
-       paddingHorizontal:20,
-    }    
-})

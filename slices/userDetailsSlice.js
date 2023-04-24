@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { collection, doc , getDoc, query , getDocs , where , setDoc , serverTimestamp , deleteDoc , orderBy  } from "firebase/firestore";
+import { collection, doc , getDoc, query , getDocs , where , setDoc , serverTimestamp , deleteDoc , orderBy, limit  } from "firebase/firestore";
 import { ref , set , remove } from 'firebase/database';
 import { db , rtdb } from '../firebase_config';
 
@@ -32,13 +32,15 @@ export const getUserData = createAsyncThunk(
         const { nav } = getState();
         const {destination , origin , trevelTimeInformation , orderDone , priceForTravel} = nav;
            const orderDoc = collection(db,`users/${id}/orders`);
-           const q = query(collection(db,`users/${id}/orders`),where('isDone',"==",false));
+           const q = query(collection(db,`users/${id}/orders`),where('isDone',"==",false),orderBy("created","desc"),limit(1));
+           //update fireStore
            await setDoc(doc(orderDoc), {
             destination , origin , trevelTimeInformation,
             created: serverTimestamp(),
             isDone:orderDone,
             price:priceForTravel,
            });
+           //update realTimeDataBase
            await getDocs(q)
            .then(querySnapshot => {
             querySnapshot.forEach((doc) => {
@@ -62,7 +64,7 @@ export const getUserData = createAsyncThunk(
          const {userId: id,isDone} = selectOrder;
          const order_ar = [];
          const q = 
-         query(collection(db,`users/${id}/orders`),where('isDone',"==",isDone));
+         query(collection(db,`users/${id}/orders`),where('isDone',"==",isDone),orderBy("created","desc"));
          const querySnapshot = await getDocs(q);
          querySnapshot.forEach((doc) => {
             order_ar.push({

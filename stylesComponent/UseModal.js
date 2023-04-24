@@ -1,17 +1,22 @@
 import { Text, View, Modal, TouchableOpacity , Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import tw from "tailwind-react-native-classnames";
-import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLoading } from "../slices/adminOrderSlice";
 import Loading from "./Loading";
 import { deleteOrder } from "../slices/userDetailsSlice";
+import EditModal from "./EditModal";
 
 const UseModal = ({ modalVisible, setModalVisible, order, id, userId , userinfo , orderId }) => {
 
   const thisIsLoading = useSelector(selectLoading);
+  const [completeOrder,setCompleteOrder] = useState(false);
   const dispath = useDispatch();
+
+  const handleOrder = () => {
+    setCompleteOrder(true)
+  }
 
   const handleDelete = () => {
     Alert.alert('האם אתה בטוח','?אתה בטוח שברצונך למחוק את ההזמנה',[
@@ -41,12 +46,17 @@ const UseModal = ({ modalVisible, setModalVisible, order, id, userId , userinfo 
     );
   }
 
-  const date = new Date();
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
       <View style={tw`w-80 bg-white m-auto ${userinfo ? 'h-3/5' : 'h-1/2'} rounded-xl`}>
         <View style={[tw`flex-row justify-center w-80 ${userinfo ? 'h-1/4' : 'h-1/3'} items-center`]}>
           <Text style={[tw`font-semibold text-3xl`]}>Order Details</Text>
+          <EditModal
+           modalVisible={completeOrder}
+           setEditModalVisible={setCompleteOrder}
+           setUseModalVisible={setModalVisible}
+           orderId={orderId}
+           userId={userId} />
           <TouchableOpacity
             style={tw`p-1.5 rounded-full shadow-xl absolute top-2 left-2`}
             onPress={() => setModalVisible(!modalVisible)}
@@ -64,7 +74,7 @@ const UseModal = ({ modalVisible, setModalVisible, order, id, userId , userinfo 
           <Text>Origin: {order?.origin?.description}</Text>
           <Text>Destination: {order?.destination?.description}</Text>
           <Text
-            style={tw`${
+            style={tw` w-1/2 ${
               order?.isDone
                 ? "bg-green-400 text-white"
                 : "bg-red-400 text-white"
@@ -78,7 +88,8 @@ const UseModal = ({ modalVisible, setModalVisible, order, id, userId , userinfo 
           </Text>
           <Text>Price: {order?.price}</Text>
           <Text style={tw`mb-4`}>
-            Created: {moment(date - order?.created?.seconds).format("LLL")}
+            Created:
+             {order?.created?.toDate().toLocaleTimeString('en-IL')}, { order?.created?.toDate().toDateString()}
           </Text>
         
         {userinfo && 
@@ -97,6 +108,7 @@ const UseModal = ({ modalVisible, setModalVisible, order, id, userId , userinfo 
               color="gray"
               type="font-awesome"
               size={30}
+              onPress={() => handleOrder()}
             />
           </TouchableOpacity>
         </View>}

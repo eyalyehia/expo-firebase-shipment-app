@@ -81,7 +81,7 @@ useEffect(() => {
        <UserProfile userId={userId} getUser={getUser}/> :
        <UserOrders userId={userId} getOrdersForUser={getOrdersForUser} />}
       <TouchableOpacity
-      style={tw`absolute bottom-10 right-8`}
+      style={tw`absolute bottom-8 right-8`}
       onPress={clearLocalStorage}
       >
         <Icon
